@@ -1,0 +1,92 @@
+Program using mask:
+
+
+%Program for noise minimization using averaging filter
+clc
+clear all
+close all
+
+%Reading input image for filtering
+A = imread('cameraman.tif');
+
+%Addition of noise to the input image
+B = imnoise(A, 'salt & pepper');
+C = imnoise(A, 'gaussian');
+D = imnoise(A, 'speckle');
+
+
+%Defining 3*3 and 5*5 kernel
+h1 = 1/9*ones(3,3);
+h2 = 1/25*ones(5,5);
+
+
+%Attempting to recover images
+B1 = conv2(B, h1, 'same');
+B2 = conv2(B, h2, 'same');
+C1 = conv2(C, h1, 'same');
+C2 = conv2(C, h2, 'same');
+D1 = conv2(D, h1, 'same');
+D2 = conv2(D, h2, 'same');
+
+
+
+%Displaying the image
+figure
+subplot(4,4,1), imshow(B) , title('Noisy Images of Salt & Pepper')
+subplot(4,4,2), imshow(uint8(B1)), title('Use of 3*3 Averaging Filter')
+subplot(4,4,3), imshow(uint8(B2)), title('Use of 5*5 Averaging Filter')
+
+subplot(4,4,4), imshow(C), title('Noisy Images of gaussian')
+subplot(4,4,5), imshow(uint8(C1)), title('Use of 3*3 Averaging Filter')
+subplot(4,4,6), imshow(uint8(C2)), title('Use of 5*5 Averaging Filter')
+
+subplot(4,4,7), imshow(D), title('Noisy Images of speckle')
+subplot(4,4,8), imshow(uint8(D1)), title('Use of 3*3 Averaging Filter')
+subplot(4,4,9), imshow(uint8(D2)), title('Use of 5*5 Averaging Filter')
+
+figure, imshow(A), title('Original Image')
+
+
+
+
+
+
+
+
+Program using sigma function:
+
+clc
+close all
+clear all
+I = imread('cameraman.tif');
+Iblur1 = imgaussfilt(I,2);
+Iblur2 = imgaussfilt(I,4);
+Iblur3 = imgaussfilt(I,8);
+figure
+imshow(I)
+title('Original image')
+figure
+imshow(Iblur1)
+title('Smoothed image, \sigma = 2')
+figure
+imshow(Iblur2)
+title('Smoothed image, \sigma = 4')
+figure
+imshow(Iblur3)
+title('Smoothed image, \sigma = 8')
+IblurX1 = imgaussfilt(I,[4 1]);
+IblurX2 = imgaussfilt(I,[8 1]);
+IblurY1 = imgaussfilt(I,[1 4]);
+IblurY2 = imgaussfilt(I,[1 8]);
+figure
+imshow(IblurX1)
+title('Smoothed image, \sigma_x = 4, \sigma_y = 1')
+figure
+imshow(IblurX2)
+title('Smoothed image, \sigma_x = 8, \sigma_y = 1')
+figure
+imshow(IblurY1)
+title('Smoothed image, \sigma_x = 1, \sigma_y = 4')
+figure
+imshow(IblurY2)
+title('Smoothed image, \sigma_x = 1, \sigma_y = 8')
